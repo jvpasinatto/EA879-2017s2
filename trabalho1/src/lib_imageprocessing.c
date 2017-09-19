@@ -1,6 +1,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+
 
 #include "imageprocessing.h"
 
@@ -78,5 +80,91 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   }
 
   FreeImage_Save(FIF_JPEG, bitmapOut, nome_do_arquivo, JPEG_DEFAULT);
+ printf("Pronto");
 }
+
+
+void max_valor(imagem *I){
+    printf("Calcular Valor Maximo\n");
+    float maximo=0, soma=0;
+    int x, z, pix;
+    for(x=0;x<I->width;x++){
+        for(z=0;z<I->height;z++){
+            pix = x + (z*I->width);
+
+            soma = ((I->b[pix]) + (I->g[pix]) + (I->r[pix]));
+
+            if(soma > maximo){
+            maximo = soma;
+            }
+
+        }
+    }
+
+    printf("O valor máximo é: %lf\n", soma);
+
+}
+void brilho_mult(float z, imagem *I){
+    printf("Multiplicando Brilho\n");
+    int x, w, pix;
+
+    for(x=0;x<I->width;x++){
+        for(w=0;w<I->height;w++){
+         pix = x + (w*I->width);
+         
+         I->r[pix] = I->r[pix]*z;
+         if( I->r[pix] > 255){
+            I->r[pix] = 255;
+        }  
+
+         I->b[pix] = I->b[pix]*z;
+         if( I->b[pix] > 255){
+            I->b[pix] = 255;
+        }  
+
+         I->g[pix] = I->g[pix]*z;
+         if( I->g[pix] > 255){
+            I->g[pix] = 255;
+        }  
+   
+        }
+    }
+    
+}
+
+void brilho_div(float z, imagem *I){
+    printf("Dividindo Brilho\n");
+
+    int x, w, pix;
+
+    for(x=0;x<I->width;x++){
+        for(w=0;w<I->height;w++){
+         pix = x + (w*I->width);
+         
+         I->r[pix] = I->r[pix]/z;
+         if( I->r[pix] > 255){
+            I->r[pix] = 255;
+        }  
+
+         I->b[pix] = I->b[pix]/z;
+         if( I->b[pix] > 255){
+            I->b[pix] = 255;
+        }  
+
+         I->g[pix] = I->g[pix]/z;
+         if( I->g[pix] > 255){
+            I->g[pix] = 255;
+        }  
+   
+        }
+    }
+  
+}
+
+
+
+
+
+
+
 

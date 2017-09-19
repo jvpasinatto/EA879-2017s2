@@ -10,10 +10,12 @@ int yylex(void);
 %union {
   char    strval[50];
   int     ival;
+  float   fval;
 }
-%token <strval> STRING
-%token <ival> VAR IGUAL EOL ASPA
-%left SOMA
+%token <strval> STRING STRINGUE
+%token <ival> VAR IGUAL EOL ASPA MULT DIV
+%token <fval> BRILHO
+%left SOMA MULT 
 
 %%
 
@@ -31,7 +33,26 @@ EXPRESSAO:
         liberar_imagem(&I);
                           }
 
+    | STRING IGUAL STRING MULT BRILHO {
+        imagem I = abrir_imagem($3);
+        printf("multiplicando brilho\n");
+        brilho_mult($5, &I);
+        salvar_imagem($1, &I);
+                                      }
+
+    | STRING IGUAL STRING DIV BRILHO {
+        imagem I = abrir_imagem($3);
+        brilho_div($5, &I);
+        salvar_imagem($1, &I);
+                                     }
+
+    | STRINGUE {
+        imagem I = abrir_imagem($1);
+        max_valor(&I);    
+    
+               }
     ;
+
 
 %%
 

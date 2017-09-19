@@ -19,6 +19,11 @@ void yyerror(char *);
 
 \" { return ASPA; }
 
+[0-9]+(.[0-9]+)? {
+    yylval.fval = atof(yytext);
+    return BRILHO;
+}
+
 [a-zA-Z0-9\.]+  {
         for (int i = 0; i < yyleng; i++ )
           yylval.strval[i] = yytext[i];
@@ -27,6 +32,31 @@ void yyerror(char *);
         printf ("Achei nome: %s\n", yylval.strval);
         return STRING;
        }
+
+
+(\[[a-zA-Z0-9\.]+\])  {
+        for (int i = 1; i < yyleng -1; i++ ){
+        	yylval.strval[i-1] = yytext[i];
+	}
+	yylval.strval[yyleng-1] = '\0';
+        printf ("Achei nome: %s\n", yylval.strval);
+        return STRINGUE;
+       }
+
+
+
+
+[*] {
+    printf("Achei mult\n");
+    return MULT;
+       }
+
+
+[/] {
+    return DIV;
+}
+
+
 
 [=]     {
           return IGUAL;
